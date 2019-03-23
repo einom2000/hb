@@ -35,13 +35,18 @@ player.setposition(0, -250)
 playerspeed = 15
 
 
-# Create the enemy
-enemy = turtle.Turtle()
-enemy.color('red')
-enemy.shape('circle')
-enemy.penup()
-enemy.speed(0)
-enemy.setposition(-200, 250)
+enemies = []
+
+for i in range(5):
+    # Create the enemy
+    enemy = turtle.Turtle()
+    enemy.color('red')
+    enemy.shape('circle')
+    enemy.penup()
+    enemy.speed(0)
+    enemy.setposition(-150 + i * (int((600 - 300 - 20) / 5) - 20), 250)
+    print(i * (int((600 - 300 - 60) / 5) - 60))
+    enemies.append(enemy)
 
 enemyspeed = 2
 
@@ -76,7 +81,7 @@ def move_right():
     player.setx(x)
 
 def fire_bullelt():
-    global  bulletsate
+    global bulletsate
 
     x = player.xcor()
     y = player.ycor() + 10
@@ -84,24 +89,25 @@ def fire_bullelt():
     bullet.showturtle()
 
 
-
-# Create kyboard bindings
+# Create keyboard bindings
 wn.listen()
 wn.onkey(move_left, 'Left')
 wn.onkey(move_right, 'Right')
 wn.onkey(fire_bullelt, 'space')
 
 while True:
-    x = enemy.xcor()
-    x +=  enemyspeed
-    enemy.setx(x)
-
     # Move the enemy back and down
-    if enemy.xcor() > 280 or enemy.xcor() < -280:
-        y = enemy.ycor()
-        y -= 40
-        enemy.sety(y)
-        enemyspeed *= -1
+    for enemy in enemies:
+        x = enemy.xcor()
+        x += enemyspeed
+        enemy.setx(x)
+        if enemy.xcor() > 280 or enemy.xcor() < -280:
+            for every_enemy_in_role in enemies:
+                y = every_enemy_in_role.ycor()
+                y -= 40
+                every_enemy_in_role.sety(y)
+            enemyspeed *= -1
+
     y = bullet.ycor()
     y += bulletspeed
     bullet.sety(y)
