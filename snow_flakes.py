@@ -23,6 +23,7 @@ def draw_branch(shape):
             flake_pen.lt(120)
             flake_pen.fd(radius)
             flake_pen.lt(60)
+
     elif shape == 'trap':
         for _ in range(2):
             flake_pen.fd(radius * 2)
