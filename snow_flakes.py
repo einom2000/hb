@@ -1,6 +1,5 @@
 import random
 import turtle
-import cv2
 
 
 def draw_branch(shape):

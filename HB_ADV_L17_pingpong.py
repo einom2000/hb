@@ -132,8 +132,6 @@ def update_paddle():
         player.setx(300 - bar2_length)
 
 
-
-
 is_game_on = True
 
 wn.listen()
