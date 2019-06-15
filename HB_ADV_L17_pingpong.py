@@ -4,6 +4,7 @@ import random
 import math
 import sys
 import winsound
+import keyboard
 
 # create screen  object
 wn = turtle.Screen()
@@ -67,9 +68,38 @@ player.shape('paddle')
 player.speed(0)
 player.showturtle()
 player.penup()
-player.setposition(-10, -200)
+player.setposition(-10, -270)
 
 player_move_pixel = 10
+
+score = 0
+style = ('Courier', 20, 'bold')
+
+display_score = turtle.Turtle()
+display_score.hideturtle()
+display_score.speed(0)
+display_score.color('white')
+display_score.penup()
+display_score.setposition(-140, 250)
+
+
+turtle.color('white')
+turtle.penup()
+turtle.hideturtle()
+turtle.goto(-250, 250)
+turtle.write('SCORE=', font=style, align="left")
+turtle.goto(130, 250)
+turtle.write('LIFE=', font=style, align='left')
+
+life_left = 3
+
+display_life = turtle.Turtle()
+display_life.hideturtle()
+display_life.speed(0)
+display_life.color('white')
+display_life.penup()
+display_life.setposition(220, 250)
+display_life.write(str(life_left), font=style, align='left')
 
 
 def move_left():
@@ -132,7 +162,14 @@ def update_paddle():
         player.setx(300 - bar2_length)
 
 
-is_game_on = True
+def wait_for_start():
+    turtle.color
+    while True:
+
+        pass
+    pass
+
+# is_game_on = True
 
 wn.listen()
 wn.onkey(move_left, 'Left')
@@ -142,21 +179,54 @@ wn.onkey(change_paddle, 'space')
 count = 0
 paddle_speed = 0
 
-while is_game_on:
+wait_for_start()
+
+while life_left != 0:
+
     update_paddle()
     ball_x = ball.xcor()
     ball_y = ball.ycor()
+    player_x = player.xcor()
+    display_score.write(str(score), font=style, align="left")
     if ball_x >= 290 or ball_x <= -295:
         ball_move_pixel_x *= -1
     elif ball_y >= 292:
         ball_move_pixel_y *= -1
-    elif ball_y < -292:
-        is_game_on = False
+
+    # half player thickness and half ball radius = 5?
+    elif ball_y <= -270 + 10 and count % 2 == 0 and \
+            player_x - bar_length / 2 <= ball_x <= player_x + bar_length:
+        ball_move_pixel_y *= -1
+        score += 100
+        display_score.clear()
+    elif ball_y <= -270 + 10 and count % 2 != 0 and \
+            player_x - bar2_length / 2 <= ball_x <= player_x + bar2_length:
+        ball_move_pixel_y *= -1
+        score += 30
+        display_score.clear()
+    elif ball_y <= -292:
+        life_left -= 1
+        display_life.clear()
+        display_life.write(str(life_left), font=style, align='left')
+        if life_left != 0:
+            ball.setposition(0, 0)
+            ball_x = ball.xcor()
+            ball_y = ball.ycor()
+            wait_for_start()
     ball_x += ball_move_pixel_x
     ball_y += ball_move_pixel_y
     ball.setposition(ball_x, ball_y)
 
+turtle.color('red')
+turtle.goto(-90,0)
+style = ('Courier', 30, 'bold')
+turtle.write('GAME OVER!', font=style, align='left')
 winsound.Beep(800, 1200)
+
+while not keyboard.is_pressed(' '):
+    pass
+
+sys.exit()
 
 
 
