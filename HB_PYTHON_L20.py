@@ -2,7 +2,7 @@ import turtle
 import time
 import random
 
-ball_total = 10
+ball_total = 100
 balls = []
 colors = ['red', 'blue', 'green', 'yellow', 'cyan',
           'magenta', 'violet', 'ivory', 'silver',
@@ -30,7 +30,7 @@ for _ in range(0, ball_total):
     ball.dx = random.uniform(0, 2)
     ball.dy = random.uniform(-1, 2)
     ball.gravity = random.uniform(0.1, 0.3)
-    ball.pendown()
+    # ball.pendown()
     balls.append(ball)
 
 
