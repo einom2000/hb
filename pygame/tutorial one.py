@@ -39,7 +39,7 @@ class Player(object):
         self.vel = 6
         self.is_jump = False
         self.jump_count = 10
-        self.left = False
+        self.left = True
         self.right = False
         self.walk_count = 0
         self.standing = True
@@ -86,6 +86,7 @@ def redraw_game_window():
 man = Player(300, 410, 64, 64)
 bullets = []
 run = True
+last_shoot_time = -1000
 while run:
     clock.tick(27)
 
@@ -101,7 +102,8 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] and pygame.time.get_ticks() - last_shoot_time >= 300:
+        last_shoot_time = pygame.time.get_ticks()
         if man.left :
             facing  = -1
         else:
