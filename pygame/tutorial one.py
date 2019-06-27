@@ -64,6 +64,23 @@ class Player(object):
         self.hit_box = (self.x + 17, self.y + 11, 29, 52)
         # pygame.draw.rect(wn, (0, 0, 0), self.hit_box, 2)
 
+    def hit(self):
+        self.x = 60
+        self.y = 410
+        self.walk_count = 0
+        font1 = pygame.font.SysFont('comicsans', 100)
+        text = font1.render('-5', 1, (255, 0, 0))
+        wn.blit(text, (250 - (text.get_width()/2), 200))
+        pygame.display.update()
+        i = 0
+        while i < 300:
+            pygame.time.delay(10)
+            i += 1
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    i = 301
+                    pygame.quit()
+
 
 class Projecttile(object):
     def __init__(self, x, y, radius, color, facing):
@@ -179,13 +196,18 @@ last_shoot_time = -1000
 while run:
     clock.tick(27)
 
+    if man.hit_box[1] < goblin.hit_box[1] + goblin.hit_box[3] and man.hit_box[1] + man.hit_box[3] > goblin.hit_box[1]:
+        if man.hit_box[0] + man.hit_box[2] > goblin.hit_box[0] and man.hit_box[0] <  goblin.hit_box[0] + goblin.hit_box[2]:
+            man.hit()
+            score -= 5
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
     for bullet in bullets:
         if goblin.hit_box[1] < bullet.y  + bullet.radius < goblin.hit_box[1] + goblin.hit_box[3] and \
-                    goblin.hit_box[0] < bullet.x + bullet.radius < goblin.hit_box[0] + goblin.hit_box[3]:
+                    goblin.hit_box[0] < bullet.x + bullet.radius < goblin.hit_box[0] + goblin.hit_box[2]:
             goblin.hit()
             hit_sound.play()
             bullets.pop(bullets.index(bullet))
