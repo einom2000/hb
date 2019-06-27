@@ -29,6 +29,7 @@ bg = pygame.image.load('pic\\bg.jpg')
 char = pygame.image.load('pic\\standing.png')
 clock = pygame.time.Clock()
 
+score = 0
 
 class Player(object):
     def __init__(self, x, y, width, height):
@@ -61,7 +62,7 @@ class Player(object):
             else:
                 wn.blit(walk_left[0], (self.x, self.y))
         self.hit_box = (self.x + 17, self.y + 11, 29, 52)
-        pygame.draw.rect(wn, (0, 0, 0), self.hit_box, 2)
+        # pygame.draw.rect(wn, (0, 0, 0), self.hit_box, 2)
 
 
 class Projecttile(object):
@@ -111,20 +112,27 @@ class Enemy(object):
         self.walk_count = 0
         self.vel = 3
         self.hit_box = (self.x + 15 - self.vel, self.y + 1, 34, 57)
+        self.health = 10
+        self.visible = True
 
     def draw(self, wn):
-        self.move()
-        if self.walk_count + 1 >= 33:
-            self.walk_count = 0
-        else:
-            self.walk_count += 1
+        if self.visible:
+            self.move()
+            if self.walk_count + 1 >= 33:
+                self.walk_count = 0
+            else:
+                self.walk_count += 1
 
-        if self.vel > 0:
-            wn.blit(self.walk_right[self.walk_count // 3], (self.x, self.y))
-        else:
-            wn.blit(self.walk_left[self.walk_count // 3], (self.x, self.y))
-        self.hit_box = (self.x + 15 - self.vel, self.y + 1, 34, 57)
-        pygame.draw.rect(wn, (255, 0, 0), self.hit_box, 2)
+            if self.vel > 0:
+                wn.blit(self.walk_right[self.walk_count // 3], (self.x, self.y))
+            else:
+                wn.blit(self.walk_left[self.walk_count // 3], (self.x, self.y))
+
+            pygame.draw.rect(wn, (255, 0, 0), (self.hit_box[0], self.hit_box[1] - 20, 50, 10), 1)
+            pygame.draw.rect(wn, (0, 255, 0), (self.hit_box[0], self.hit_box[1] - 20,
+                                               50 - ((50 / 10) * (10 - self.health)), 10))
+            self.hit_box = (self.x + 15 - self.vel, self.y + 1, 34, 57)
+            # pygame.draw.rect(wn, (255, 0, 0), self.hit_box, 2)
 
     def move(self):
         if self.x + self.vel < self.path[1]:
@@ -139,11 +147,17 @@ class Enemy(object):
             self.walk_count = 0
 
     def hit(self):
+        if self.health > 1:
+            self.health -= 1
+        else:
+            self.visible = False
         pass
 
 
 def redraw_game_window():
     wn.blit(bg, (0, 0))
+    text = font.render('Score:' + str(score), 1, (0, 0, 0))
+    wn.blit(text, (20, 10))
     man.draw(wn)
     goblin.draw(wn)
     for bullet in bullets:
@@ -152,6 +166,11 @@ def redraw_game_window():
 
 
 # main loop
+font = pygame.font.SysFont('comicsans', 30, True)
+bullet_sound = pygame.mixer.Sound('pic\\bullet.wav')
+hit_sound = pygame.mixer.Sound('pic\\hit.wav')
+music = pygame.mixer.music.load('pic\\music.mp3')
+pygame.mixer.music.play(-1)
 man = Player(200, 410, 64, 64)
 goblin = Enemy(64, 410, 64, 64, 450)
 bullets = []
@@ -165,10 +184,12 @@ while run:
             run = False
 
     for bullet in bullets:
-        if goblin.hit_box[1] < bullet.y  + bullet.radius < goblin.hit_box[1] + goblin.hit_box[4] and \
+        if goblin.hit_box[1] < bullet.y  + bullet.radius < goblin.hit_box[1] + goblin.hit_box[3] and \
                     goblin.hit_box[0] < bullet.x + bullet.radius < goblin.hit_box[0] + goblin.hit_box[3]:
             goblin.hit()
-
+            hit_sound.play()
+            bullets.pop(bullets.index(bullet))
+            score += 10
         if 0 < bullet.x < 500:
             bullet.x += bullet.vel
         else:
@@ -184,6 +205,7 @@ while run:
             facing = 1
 
         if len(bullets) < 5:
+            bullet_sound.play()
             bullets.append(Projecttile(round(man.x + man.width // 2), round(man.y + man.height // 2)
                                        , 6, (255, 0, 0), facing))
 
