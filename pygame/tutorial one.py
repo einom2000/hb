@@ -39,7 +39,7 @@ class Player(object):
         self.height = height
         self.vel = 6
         self.is_jump = False
-        self.jump_count = 10
+        self.jump_count = 15
         self.left = True
         self.right = False
         self.walk_count = 0
@@ -65,7 +65,10 @@ class Player(object):
         # pygame.draw.rect(wn, (0, 0, 0), self.hit_box, 2)
 
     def hit(self):
-        self.x = 60
+        if self.x >= 200:
+            self.x = 60
+        else:
+            self.x = 300
         self.y = 410
         self.walk_count = 0
         font1 = pygame.font.SysFont('comicsans', 100)
@@ -188,7 +191,7 @@ bullet_sound = pygame.mixer.Sound('pic\\bullet.wav')
 hit_sound = pygame.mixer.Sound('pic\\hit.wav')
 music = pygame.mixer.music.load('pic\\music.mp3')
 pygame.mixer.music.play(-1)
-man = Player(200, 410, 64, 64)
+man = Player(300, 410, 64, 64)
 goblin = Enemy(64, 410, 64, 64, 450)
 bullets = []
 run = True
