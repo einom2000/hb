@@ -98,7 +98,7 @@ class Projecttile(object):
         pygame.draw.circle(wn, self.color, (self.x, self.y), self.radius)
 
 
-class Enemy(object):
+class Enemy(object):    ,
     walk_right = [pygame.image.load('pic\\R1E.png'),
                   pygame.image.load('pic\\R2E.png'),
                   pygame.image.load('pic\\R3E.png'),
