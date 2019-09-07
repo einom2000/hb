@@ -172,8 +172,6 @@ class Player(object):
                     pygame.quit()
 
 
-
-
 class Projecttile(object):
     def __init__(self, x, y, radius, color, facing):
         self.x = x
