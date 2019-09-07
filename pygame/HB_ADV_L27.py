@@ -225,7 +225,7 @@ while run:
             run = False
 
     for bullet in bullets:
-        if goblin.hitbox[1] < bullet.y + bullet.radius < \
+        if goblin.hit_box[1] < bullet.y + bullet.radius < \
                 goblin.hit_box[1] + goblin.hit_box[3] and \
                 goblin.hit_box[0] < bullet.x + bullet.radius < \
                 goblin.hit_box[0] + goblin.hit_box[2]:
