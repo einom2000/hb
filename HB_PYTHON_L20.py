@@ -22,6 +22,7 @@ wn.tracer(0)
 for _ in range(0, ball_total):
     ball = turtle.Turtle()
     ball.shape('circle')
+    ball.turtlesize(random.randint(1,3))
     ball.color(random.choices(colors))
     ball.speed(0)
     ball.penup()
