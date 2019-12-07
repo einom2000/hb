@@ -1,4 +1,5 @@
-import pygame
-clock = pygame.time.Clock()
+import random
+
 while True:
-    print(pygame.time.get_ticks() / 1000.0)
+
+    print(random.randint(1, 3))

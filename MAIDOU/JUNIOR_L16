@@ -1,0 +1,31 @@
+import random
+
+noun1 = ['apple', 'kid', 'mountain', 'tiger', 'cloud', 'lake']
+noun2 = ['candy', 'car', 'dog', 'house', 'table', 'school']
+adj   = ['red', 'happy', 'mad', 'dirty', 'silly', 'funny']
+verb  = ['run', 'sleep', 'swim', 'lay', 'stand', 'shout']
+adv   = ['quickly', 'fast', 'sadly', 'slowly', 'dramatically',
+         'badly']
+prep = ['in', 'on', 'over', 'under', 'above', 'below']
+
+# object = noun1[random.randint(0, 5)]
+# adj1 = adj[random.randint(0, 5)]
+# prep1 = prep[random.randint(0, 5)]
+# verb1 = verb[random.randint(0, 5)]
+# adv1 = adv[random.randint(0, 5)]
+# subject = noun2[random.randint(0, 5)]
+#
+# print('The ' + adj1 + ' ' + subject + ' ' + verb1 + ' ' + prep1 \
+#       + ' the ' + object + ' ' + adv1 + ' !')
+
+words = [adj, noun2, verb, prep, noun1, adv]
+sentence = ['The ', ]
+for luca in words:
+    sentence.append(luca[random.randint(0, 5)] + ' ')
+    if words.index(luca) == 3:
+        sentence.append('the ')
+
+for w in sentence:
+    print(w, end='')
+print('.')
+
